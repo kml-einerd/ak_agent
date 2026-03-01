@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd:*)",
+      "Bash(wc:*)",
+      "Bash(find C:\\\\Users\\\\dis\\\\Downloads\\\\KML_mkt\\\\Vídeos e audios CDV\\\\pm-engine:*)",
+      "Bash(cd C:\\\\Users\\\\dis\\\\Downloads\\\\KML_mkt\\\\Vídeos e audios CDV\\\\pm-engine:*)",
+      "WebSearch",
+      "Bash(supabase:*)",
+      "WebFetch(domain:webcache.googleusercontent.com)",
+      "WebFetch(domain:web.archive.org)",
+      "WebFetch(domain:andersonteala.com.br)",
+      "Bash(powershell:*)",
+      "WebFetch(domain:deepwiki.com)",
+      "WebFetch(domain:akitaonrails.github.io)",
+      "WebFetch(domain:www.akitaonrails.com)",
+      "WebFetch(domain:archive.org)",
+      "WebFetch(domain:simonwillison.net)",
+      "Bash(grep:*)",
+      "Bash(node:*)",
+      "WebFetch(domain:dev.to)",
+      "Bash(perl:*)",
+      "Bash(ssh:*)",
+      "Bash(sshpass:*)",
+      "Bash(powershell.exe:*)",
+      "Bash(tailscale ssh:*)",
+      "Bash(scp:*)",
+      "Bash(cp:*)",
+      "Bash(ls -lh \"C:\\\\Users\\\\dis\\\\Downloads\\\\KML_mkt\\\\Vídeos e audios CDV\\\\pm-engine\\\\src\"/*.js)",
+      "Bash(find C:\\\\Users\\\\dis\\\\Downloads\\\\KML_mkt\\\\Vídeos e audios CDV\\\\pm-engine\\\\src:*)",
+      "WebFetch(domain:trigger.dev)",
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(test:*)",
+      "Bash(echo Trying alternative...:*)",
+      "Bash(gh api:*)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "supabase"
+  ]
+}
