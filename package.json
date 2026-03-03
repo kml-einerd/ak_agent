@@ -1,0 +1,12 @@
+{
+  "name": "akita-agent-tests",
+  "version": "1.0.0",
+  "description": "TDD test suite — Akita Agent knowledge base validation",
+  "scripts": {
+    "test": "node --test tests/",
+    "test:integrity": "node --test tests/test-01-integrity.js",
+    "test:structure": "node --test tests/test-02-structure.js",
+    "test:routing": "node --test tests/test-03-routing.js",
+    "test:ideals": "node --test tests/test-04-ideals.js"
+  }
+}

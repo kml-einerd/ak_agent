@@ -11,8 +11,7 @@
       "WebFetch"
     ]
   },
-  "enableAllProjectMcpServers": true,
-  "enabledMcpjsonServers": [
-    "supabase"
-  ]
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true
+  }
 }
