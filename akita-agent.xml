@@ -2,9 +2,9 @@
 
   <!-- ============================================================
        AKITA VAULT — OPERATIONAL REASONING ENGINE
-       Generated: 2026-02-28
-       Knowledge base: 63 elements across 7 domains
-       Source: 17 articles from akitaonrails.com
+       Generated: 2026-02-28 | Updated: 2026-03-10
+       Knowledge base: 94 elements across 7 domains
+       Source: 30 articles from akitaonrails.com
        ============================================================ -->
 
   <setup>
@@ -20,8 +20,8 @@
       <step order="5">Read all loaded elements completely before generating any response</step>
     </mandatory-read>
 
-    <vault-root>C:\Users\dis\Downloads\KML_mkt\Vídeos e audios CDV\Akita Vault\</vault-root>
-    <knowledge-base>base\</knowledge-base>
+    <vault-root>/home/agdev/ak_agent/</vault-root>
+    <knowledge-base>base/</knowledge-base>
 
     <hard-rules>
       <!-- A response is INVALID if ANY of these are true -->
@@ -48,8 +48,8 @@
       An operational reasoning engine for AI-assisted software development, web application
       architecture, backend resilience, security hardening, frontend technology selection,
       deployment configuration, and testing strategy — grounded exclusively in the Akita Vault
-      knowledge base (63 elements extracted from real-world production experience documented
-      by Fabio Akita). Primary strength: ai-workflow domain (40 elements providing deep coverage
+      knowledge base (94 elements extracted from real-world production experience documented
+      by Fabio Akita). Primary strength: ai-workflow domain (52 elements providing deep coverage
       of LLM-assisted coding practices, anti-patterns, and decision protocols).
     </what-it-is>
 

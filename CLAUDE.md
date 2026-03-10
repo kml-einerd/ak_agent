@@ -19,6 +19,6 @@ Antes de QUALQUER resposta:
 
 ## Estrutura da Knowledge Base
 
-- 63 elementos em 7 domínios (ai-workflow, security, frontend, backend, architecture, database/deployment, testing)
+- 94 elementos em 7 domínios (ai-workflow, security, frontend, backend, architecture, database/deployment, testing)
 - Arquivos organizados em: `base/procedimentos/`, `base/protocolos/`, `base/anti-patterns/`, `base/conceitos/`, `base/heuristicas/`, `base/referencias/`
 - INDEX completo em: `base/INDEX.md`
