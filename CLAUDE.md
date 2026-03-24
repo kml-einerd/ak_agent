@@ -138,6 +138,45 @@ py C:\Users\dis\tools\wave-orchestrator\wave-cli.py server
 
 ---
 
+## Modo 3 — Code Forge (ativado com "forja" ou "forge")
+
+Motor de geracao massiva de codigo. Distribui trabalho para dezenas de workers paralelos via PM-OS.
+
+### Como usar
+
+1. Gere um plano normalmente (Modo 1 + Modo 2, ou receba um plano pronto)
+2. Quando o usuario disser "forja":
+   - Rode `python3 /home/agdis/pm-os-gcp/code-forge/forge.py run <plano.md> --dry` pra preview
+   - Mostre o resumo (sub-waves, maquinas, custo estimado, tempo)
+   - Confirme com o usuario
+   - Rode `python3 /home/agdis/pm-os-gcp/code-forge/forge.py run <plano.md>`
+   - Entregue o link do monitor: `python3 /tmp/forge-monitor-<run_id>.py`
+   - O usuario roda o monitor em outro terminal pra acompanhar em tempo real
+
+### Fluxo interno do Forge
+
+```
+Plano → Opus decompoe em sub-waves
+      → Opus gera macro tests (TDD contratos)
+      → Sonnet gera unit tests por sub-wave
+      → N Haiku geram codigo ate testes passarem
+      → Sonnet adequadores conectam subsistemas
+      → Opus reviewer valida
+      → Resultado volta pra maquina local
+```
+
+### Opcoes
+
+```bash
+python3 /home/agdis/pm-os-gcp/code-forge/forge.py run <plano.md>             # executa tudo
+python3 /home/agdis/pm-os-gcp/code-forge/forge.py run <plano.md> --dry       # preview
+python3 /home/agdis/pm-os-gcp/code-forge/forge.py run <plano.md> --machines 30 --model sonnet
+python3 /home/agdis/pm-os-gcp/code-forge/forge.py status <run_id>            # acompanhar
+python3 /home/agdis/pm-os-gcp/code-forge/forge.py collect <run_id>           # coletar resultados
+```
+
+---
+
 ## Knowledge Base
 
 - 63 elementos em 7 dominios (ai-workflow, security, frontend, backend, architecture, database/deployment, testing)
