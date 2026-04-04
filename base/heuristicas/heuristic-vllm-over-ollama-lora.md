@@ -3,7 +3,10 @@
 **DOMAIN:** ai-workflow
 **RULE:** When serving local LLM models with LoRA adapters, use vLLM instead of Ollama — Ollama uses a proprietary model format and has limited LoRA support, while vLLM natively loads HuggingFace .safetensors models with LoRA adapters.
 **APPLIES WHEN:** Deploying a fine-tuned model locally for AI coding agents (Aider, Crush, OpenCode) or for multi-user inference serving where LoRA adapters need to be loaded alongside the base model.
-**RATIONALE:** Ollama wraps models in a proprietary format (not .safetensors), making LoRA attachment non-trivial and poorly documented. vLLM serves an OpenAI-compatible API (`vllm serve Model --enable-lora --lora-modules name=./lora-dir`), supports HuggingFace model formats directly, and lists the LoRA as a separate "model" in the /v1/models endpoint — any tool that supports OpenAI API can use it. For production multi-user serving, vLLM also provides continuous batching and better throughput. AI coding agents (Aider, Crush) can connect to vLLM by pointing OPENAI_API_BASE to localhost and using `hosted_vllm/model-name` as the model identifier.
+**RATIONALE:**
+1. Ollama wraps models in a proprietary format (not .safetensors), making LoRA attachment non-trivial and poorly documented — this creates friction for any fine-tuning workflow. [explicit]
+2. vLLM serves an OpenAI-compatible API (`vllm serve Model --enable-lora --lora-modules name=./lora-dir`), supports HuggingFace model formats directly, and lists the LoRA as a separate "model" in the /v1/models endpoint — any tool that supports OpenAI API can use it transparently. [explicit]
+3. For production multi-user serving, vLLM also provides continuous batching and better throughput, and AI coding agents (Aider, Crush) can connect by pointing OPENAI_API_BASE to localhost. [derived]
 **COUNTER-INDICATION:** If you don't need LoRA adapters and just want to run a stock model locally with minimal setup, Ollama is simpler and sufficient — `ollama run model` requires no configuration. vLLM has heavier Python dependencies, requires explicit VRAM management (`--max_model_len`), and is more complex to set up.
 
 ## OPERATIONAL NOTE: vLLM + LoRA Startup Latency

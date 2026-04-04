@@ -22,5 +22,18 @@ Deploy a local ComfyUI workflow via Docker with CUDA, giving full pipeline contr
 
 **NOT TO CONFUSE WITH:** Using closed APIs for rapid prototyping or exploration where reproducibility and content control are not required — for casual use the tradeoff is acceptable.
 
+## OPERATIONAL CONSTRAINTS
+**FOR reliable professional image generation TO SUCCEED:**
+
+NEVER:
+- Use closed-API image generators (ChatGPT, DALL-E) for production workflows requiring reproducibility [explicit — ROOT CAUSE: "unpredictable, non-configurable content moderation"]
+- Rely on cloud API consistency for client deliverables — the same prompt may be refused tomorrow [explicit — RATIONALE point 1: "same prompt and image may be accepted one day and refused the next"]
+
+ALWAYS:
+- Deploy local ComfyUI with full pipeline control (checkpoint, LoRA, ControlNet, VAE, sampler) for professional work [explicit — CORRECTION]
+- Verify pipeline reproducibility by running the same workflow twice with identical outputs [derived — RATIONALE point 2: "a workflow that produces a result today must produce a comparable result tomorrow"]
+
+GATE: Image generation pipeline runs locally with user-controlled model selection. If false, migrate to local ComfyUI before accepting production work.
+
 ## SOURCE
 https://akitaonrails.com/2025/04/20/gerando-imagens-com-i-a-ate-estilo-ghibli-com-docker-e-cuda/

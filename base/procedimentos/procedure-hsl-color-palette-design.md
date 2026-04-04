@@ -25,7 +25,8 @@
 ---
 
 ## DONE WHEN
-All color pairs (background + text) pass WCAG AA contrast ratio (4.5:1 minimum). Adding a new section is trivial: pick an unoccupied hue, apply same S/L rules, and the new color automatically "belongs" to the design.
+- All color pairs (background + text) pass WCAG AA contrast ratio (4.5:1 minimum), verified with a contrast checker tool
+- Adding a new section requires only picking an unoccupied hue and applying the same S/L rules — no subjective color decisions needed
 
 ## SOURCE
 https://akitaonrails.com/2026/02/19/frontend-sem-framework-bastidores-do-the-m-akita-chronicles/

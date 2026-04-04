@@ -3,7 +3,10 @@
 **DOMAIN:** ai-workflow
 **RULE:** Every installed AI agent skill/plugin adds 80-250 tokens to the system prompt per session, even when unused — be selective about what you install and regularly audit your active skills.
 **APPLIES WHEN:** Using any AI coding agent that supports skills/plugins (Claude Code, Cursor, Crush, OpenCode). The cost compounds: 50 installed skills = 4,000 to 12,500 tokens consumed before you type your first prompt.
-**RATIONALE:** Agent skills work by injecting their metadata (name, description, script paths, XML formatting) into the system prompt at the start of every session. This is the model's "memory" — it has no persistent awareness of tools, so skills must be re-declared every time. These tokens are billed regardless of whether you use the skill in that session. A developer who installs every available marketplace plugin pays a significant token tax on every session, making each interaction more expensive and potentially pushing useful context out of the context window. Skills are genuinely useful, but the cost is invisible unless you track it.
+**RATIONALE:**
+1. Agent skills inject their metadata (name, description, script paths, XML formatting) into the system prompt at session start — the model has no persistent tool awareness, so skills must be re-declared every time, consuming tokens regardless of usage. [explicit]
+2. A developer who installs every available marketplace plugin pays a significant token tax on every session, making interactions more expensive and potentially pushing useful context out of the context window. [derived]
+3. Skills are genuinely useful, but the cost is invisible unless you track it — awareness requires deliberate auditing. [explicit]
 **COUNTER-INDICATION:** If you're on a flat-rate subscription (unlimited tokens per month) and your context window is large enough (200K+ tokens), the token cost is irrelevant. Also, for frequently-used skills that save significant manual work, the token overhead is justified by the productivity gain.
 
 ## OPERATIONAL CONSTRAINTS

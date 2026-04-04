@@ -35,5 +35,18 @@ Decompose documentation into small, self-contained Q&A pairs rather than loading
 
 **NOT TO CONFUSE WITH:** Alignment prompt oversampling (the intentional 100x repetition of prompt/completion pairs). That technique compensates for small alignment prompt size relative to the corpus. The correction here is about the format of ALL training data, including the documentation corpus itself.
 
+## OPERATIONAL CONSTRAINTS
+**FOR successful LoRA fine-tuning on chat-format models TO SUCCEED:**
+
+NEVER:
+- Feed raw unstructured text (documentation, release notes) without chat-token delimiters to an instruction-tuned model [explicit — ROOT CAUSE: "trained on raw flat text without these delimiters, the model learns that a response can be an arbitrarily long document"]
+- Assume alignment prompt oversampling compensates for unformatted documentation corpus [explicit — RATIONALE point 4]
+
+ALWAYS:
+- Format ALL training data as chat-format conversation pairs with explicit turn delimiters (`<|im_start|>` / `<|im_end|>` for ChatML models) [explicit — CORRECTION]
+- Decompose documentation into small, self-contained Q&A pairs covering one concept each [explicit — CORRECTION]
+
+GATE: Every training data file contains chat-token delimiters matching the base model's chat template. If false, reformat training data before starting LoRA training.
+
 ## SOURCE
 https://akitaonrails.com/2025/05/03/ultimo-tentativa-de-treinar-uma-llm-com-lora-tiro-de-canhao-mas-errando-a-mosca/

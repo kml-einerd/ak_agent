@@ -29,5 +29,18 @@ With auto-commit disabled: Aider proposes changes, developer reviews the diff in
 
 **NOT TO CONFUSE WITH:** Aider's `--dry-run` mode, which shows what would be done without writing any files. The anti-pattern is specifically the default auto-commit behavior, not the dry-run preview.
 
+## OPERATIONAL CONSTRAINTS
+**FOR safe AI-assisted git workflow TO SUCCEED:**
+
+NEVER:
+- Allow auto-commit of LLM-generated changes without human diff review [explicit — ROOT CAUSE: "auto-commit bypasses the mandatory human review gate"]
+- Trust LLM commit messages as proof that the change is correct [explicit — RATIONALE point 1: "LLMs claim to have done what was asked but frequently break adjacent code"]
+
+ALWAYS:
+- Disable auto-commit in Aider config (`auto-commits: false`) before first use [explicit — CORRECTION]
+- Review the full diff in the editor before manually staging and committing [explicit — CORRECTION: "developer reviews the diff"]
+
+GATE: `auto-commits: false` is set in `$HOME/.aider.conf.yml` or equivalent. If false, disable auto-commit before proceeding.
+
 ## SOURCE
 https://akitaonrails.com/2025/04/25/seu-proprio-co-pilot-gratuito-universal-que-funciona-local-aider-ollama-qwen/

@@ -381,6 +381,173 @@
             Unit testing frameworks, E2E testing, and CI/CD setup are not covered.</then>
     </route>
 
+    <!-- ==================== SELF-HOSTING / INFRASTRUCTURE DOMAIN ==================== -->
+
+    <route id="selfhost-storage-setup">
+      <if>Request involves iSCSI, block devices, NAS storage protocols, NFS vs SMB,
+          or choosing between block-level and file-level storage for a home server</if>
+      <load>
+        base/procedimentos/procedure-iscsi-block-device-setup.md
+        base/anti-patterns/antipattern-nfs-smb-high-churn-storage.md
+        base/conceitos/concept-block-vs-file-protocol.md
+      </load>
+      <then>Apply PROCEDURE for iSCSI setup. Apply ANTI-PATTERN gate for NFS/SMB.
+            Apply CONCEPT to clarify block vs file protocol choice.</then>
+    </route>
+
+    <route id="selfhost-network-access">
+      <if>Request involves exposing home server services, Cloudflare tunnels, zero-trust
+          access, or avoiding open ports on a home network</if>
+      <load>
+        base/procedimentos/procedure-cloudflare-tunnel-home-server.md
+        base/heuristicas/heuristic-no-open-ports-tunnel-first.md
+        base/protocolos/protocol-zero-trust-access-layer.md
+      </load>
+      <then>Apply PROCEDURE for tunnel setup. Apply HEURISTIC as default rule.
+            Apply PROTOCOL for zero-trust evaluation.</then>
+    </route>
+
+    <route id="selfhost-media-server">
+      <if>Request involves setting up a personal media server, *arr stack (Sonarr, Radarr,
+          Prowlarr, Jellyfin), or automating media downloads and organization</if>
+      <load>
+        base/procedimentos/procedure-arr-stack-personal-media-server.md
+        base/conceitos/concept-arr-stack-architecture.md
+      </load>
+      <then>Apply PROCEDURE for arr stack setup. Apply CONCEPT for architecture understanding.</then>
+    </route>
+
+    <route id="selfhost-serverless-gpu">
+      <if>Request involves serverless GPU, cold start latency for GPU workloads,
+          or running inference on cloud GPUs</if>
+      <load>
+        base/conceitos/concept-serverless-gpu-cold-start.md
+      </load>
+      <then>Apply CONCEPT to understand cold start tradeoffs.</then>
+    </route>
+
+    <!-- ==================== AI IMAGE GENERATION (ComfyUI/Diffusion) DOMAIN ==================== -->
+
+    <route id="comfyui-setup">
+      <if>Request involves setting up ComfyUI, ComfyUI Docker, or configuring a
+          local image generation environment</if>
+      <load>
+        base/procedimentos/procedure-comfyui-docker-setup.md
+        base/conceitos/concept-comfyui-model-taxonomy.md
+        base/heuristicas/heuristic-comfyui-directory-is-role.md
+      </load>
+      <then>Apply PROCEDURE for Docker setup. Apply CONCEPT for model taxonomy.
+            Apply HEURISTIC for directory organization.</then>
+    </route>
+
+    <route id="comfyui-debugging">
+      <if>Request involves debugging ComfyUI workflows, troubleshooting image generation
+          pipelines, or ComfyUI errors</if>
+      <load>
+        base/protocolos/protocol-comfyui-workflow-debug.md
+        base/conceitos/concept-diffusion-pipeline-stages.md
+      </load>
+      <then>Apply PROTOCOL for workflow debugging. Apply CONCEPT for pipeline understanding.</then>
+    </route>
+
+    <route id="ai-image-generation">
+      <if>Request involves AI image generation quality, choosing between ChatGPT image
+          generation and dedicated tools, LoRA compatibility with base models,
+          or professional AI image workflows</if>
+      <load>
+        base/anti-patterns/antipattern-chatgpt-image-professional-use.md
+        base/heuristicas/heuristic-lora-base-model-compatibility.md
+      </load>
+      <then>Apply ANTI-PATTERN gate for ChatGPT image use. Apply HEURISTIC for LoRA compatibility.</then>
+    </route>
+
+    <!-- ==================== EMAIL DELIVERY DOMAIN ==================== -->
+
+    <route id="email-delivery-infrastructure">
+      <if>Request involves email sender reputation, SPF/DKIM/DMARC, SES bounce handling,
+          complaint reconciliation, or email delivery reliability</if>
+      <load>
+        base/protocolos/protocol-sender-reputation-infrastructure.md
+        base/protocolos/protocol-ses-bounce-complaint-reconciliation.md
+        base/heuristicas/heuristic-email-prefer-at-most-once.md
+      </load>
+      <then>Apply PROTOCOL for sender reputation. Apply PROTOCOL for SES bounce handling.
+            Apply HEURISTIC for at-most-once delivery rule.</then>
+    </route>
+
+    <!-- ==================== AI-WORKFLOW DOMAIN (new batch) ==================== -->
+
+    <route id="ai-script-generation">
+      <if>Request involves generating scripts with LLMs, two-pass generation,
+          or improving quality of LLM-generated code through multi-pass approaches</if>
+      <load>
+        base/procedimentos/procedure-two-pass-llm-script-generation.md
+        base/heuristicas/heuristic-input-quality-dominates-ai-output.md
+      </load>
+      <then>Apply PROCEDURE for two-pass generation. Apply HEURISTIC for input quality rule.</then>
+    </route>
+
+    <route id="ai-aider-workflow">
+      <if>Request involves Aider tool, architect-editor mode, or Aider auto-commit behavior</if>
+      <load>
+        base/protocolos/protocol-aider-architect-editor-mode.md
+        base/anti-patterns/antipattern-aider-auto-commit.md
+      </load>
+      <then>Apply PROTOCOL for Aider mode selection. Apply ANTI-PATTERN gate for auto-commit.</then>
+    </route>
+
+    <route id="ai-llm-behavior">
+      <if>Request involves LLM default behaviors, anthropomorphized responses, persona
+          settings for technical work, or LLM as lossy compression</if>
+      <load>
+        base/anti-patterns/antipattern-llm-anthropomorphized-defaults.md
+        base/heuristicas/heuristic-disable-llm-persona-technical.md
+        base/conceitos/concept-llm-as-lossy-compression.md
+      </load>
+      <then>Apply ANTI-PATTERN for anthropomorphized defaults. Apply HEURISTIC for persona.
+            Apply CONCEPT for lossy compression mental model.</then>
+    </route>
+
+    <route id="ai-lora-data-quality">
+      <if>Request involves LoRA training data preparation, raw text quality for fine-tuning,
+          or data curation for model training</if>
+      <load>
+        base/anti-patterns/antipattern-lora-training-data-raw-text.md
+      </load>
+      <then>Apply ANTI-PATTERN for raw text data quality issues.</then>
+    </route>
+
+    <route id="ai-llm-architecture">
+      <if>Request involves LLM API caching, dev caching strategies for LLM calls,
+          implicit conventions causing LLM friction, agent tool loops,
+          or context window management</if>
+      <load>
+        base/conceitos/concept-dev-cache-llm-api.md
+        base/conceitos/concept-implicit-convention-llm-friction.md
+        base/conceitos/concept-llm-agent-tool-loop.md
+        base/heuristicas/heuristic-sliding-window-context-limit.md
+      </load>
+      <then>Apply CONCEPTs for architectural understanding. Apply HEURISTIC for context limits.</then>
+    </route>
+
+    <route id="ai-model-specialization">
+      <if>Request involves choosing specialized vs generalist models, or deciding
+          whether to use a specialized model for a specific task</if>
+      <load>
+        base/heuristicas/heuristic-specialized-model-over-generalist.md
+      </load>
+      <then>Apply HEURISTIC: prefer specialized model when available.</then>
+    </route>
+
+    <route id="ai-project-isolation">
+      <if>Request involves isolating LLM project namespaces, preventing cross-project
+          contamination, or organizing AI workspaces</if>
+      <load>
+        base/heuristicas/heuristic-llm-project-namespace-isolation.md
+      </load>
+      <then>Apply HEURISTIC for namespace isolation rule.</then>
+    </route>
+
     <!-- ==================== META RULES ==================== -->
 
     <cross-domain-rule>

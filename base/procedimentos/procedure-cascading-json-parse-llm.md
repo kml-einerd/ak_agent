@@ -19,7 +19,9 @@
 ---
 
 ## DONE WHEN
-Every LLM response produces either a fully parsed JSON object or a clearly marked partial/error result. Zero responses are silently dropped. The cascade is tested with known-bad inputs (markdown fences, trailing text, truncated JSON, missing braces).
+- Every LLM response produces either a fully parsed JSON object or a clearly marked partial/error result (verified by checking that no response returns null/undefined without an error flag)
+- Zero responses are silently dropped (verified by comparing input count to output count)
+- The cascade is tested with known-bad inputs: markdown fences, trailing text, truncated JSON, and missing braces all produce a result or structured error
 
 ## SOURCE
 https://akitaonrails.com/2026/02/23/vibe-code-fiz-um-indexador-inteligente-de-imagens-com-ia-em-2-dias/

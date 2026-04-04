@@ -20,7 +20,9 @@
 ---
 
 ## DONE WHEN
-Script contains all content from the source material, reads naturally when spoken aloud (no awkward formal phrasing), and TTS synthesis produces audio without unnatural pauses, clipped syllables, or abrupt transitions.
+- Script contains all content from the source material (verified by cross-checking every item from the source against the final script)
+- Script reads naturally when spoken aloud with no awkward formal phrasing (verified by reading a sample section aloud)
+- TTS synthesis produces audio without unnatural pauses, clipped syllables, or abrupt transitions
 
 ## SOURCE
 https://akitaonrails.com/2026/02/18/servindo-ia-na-nuvem-meu-tts-pessoal-bastidores-do-the-m-akita-chronicles/

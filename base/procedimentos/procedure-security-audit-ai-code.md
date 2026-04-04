@@ -22,7 +22,9 @@
 ---
 
 ## DONE WHEN
-All identified issues are classified, fixed, tested, and the test suite grows to cover each security fix explicitly. No CRITICAL or HIGH issues remain open.
+- All identified CRITICAL and HIGH issues are fixed and verified (zero open CRITICAL/HIGH in the audit report)
+- Test suite grows to cover each security fix explicitly (verified by comparing test count before and after the audit)
+- Full test suite passes with zero regressions after applying fixes
 
 ## SOURCE
 https://akitaonrails.com/2026/02/21/vibe-code-fiz-um-clone-do-mega-em-rails-em-1-dia-pro-meu-home-server/

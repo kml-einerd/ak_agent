@@ -25,7 +25,10 @@
 ---
 
 ## DONE WHEN
-Every uploaded file has: sanitized filename safe for all target filesystems, server-verified MIME type, server-measured file size, and passes quota check against user's disk allocation.
+- Every uploaded file has a sanitized filename safe for all target filesystems (no path traversal, no control chars, no reserved names, within 255-byte limit)
+- MIME type is verified server-side from file magic bytes, not from client-supplied Content-Type header
+- File size is measured from the tempfile on disk, not from the Content-Length header
+- Quota check passes against user's disk allocation before persisting the file
 
 ## SOURCE
 https://akitaonrails.com/2026/02/21/vibe-code-fiz-um-clone-do-mega-em-rails-em-1-dia-pro-meu-home-server/

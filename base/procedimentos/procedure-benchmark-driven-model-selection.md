@@ -21,7 +21,9 @@
 ---
 
 ## DONE WHEN
-Model selected based on measured data (not blog posts or intuition), PoC validates pipeline end-to-end with zero errors, and cost projection confirms feasibility at production scale.
+- Model selected based on measured benchmark data with confidence intervals from 3+ repetitions (not blog posts or intuition)
+- PoC validates the full pipeline end-to-end with zero errors on the ground truth corpus
+- Cost projection confirms feasibility at production scale (extrapolated from measured per-item timing to target volume)
 
 ## SOURCE
 https://akitaonrails.com/2026/02/23/vibe-code-fiz-um-indexador-inteligente-de-imagens-com-ia-em-2-dias/

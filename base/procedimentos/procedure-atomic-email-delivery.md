@@ -21,7 +21,9 @@
 ---
 
 ## DONE WHEN
-All delivery records are in a terminal state: "sent", "failed_permanent", or "unknown" (manually reviewed). No emails were sent twice. Server restarts during the process result in resumption from where it stopped, not from the beginning.
+- All delivery records are in a terminal state: "sent", "failed_permanent", or "unknown" (verified by `SELECT count(*) FROM email_deliveries WHERE status NOT IN ('sent','failed_permanent','unknown')` returning 0)
+- No emails were sent twice (verified by checking delivery logs for duplicate recipient+newsletter pairs)
+- Server restart during the process results in resumption from where it stopped, not from the beginning (verified by killing the process mid-run and confirming already-sent records are not re-sent)
 
 ## SOURCE
 https://akitaonrails.com/2026/02/19/jobs-asssincronos-que-sobrevivem-ao-caos-bastidores-do-the-m-akita-chronicles/

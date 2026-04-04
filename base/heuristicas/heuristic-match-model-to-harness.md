@@ -3,7 +3,10 @@
 **DOMAIN:** ai-workflow
 **RULE:** Use each LLM provider's own agent tool for best results — Claude models perform best in Claude Code, GPT models perform best in Codex CLI — because models are fine-tuned for their specific harness (system prompt, patch format, tool definitions, orchestration loop).
 **APPLIES WHEN:** Choosing which AI coding agent to use for a project, or when experiencing poor results from an LLM in a third-party tool.
-**RATIONALE:** GPT Codex models were fine-tuned specifically for the Codex harness: the `apply_patch` diff format (not standard unified diff), `rg` (not grep), `AGENTS.md` (not CLAUDE.md), and specific tool calling conventions. Using GPT in a tool designed for Claude's conventions produces suboptimal results because the model's fine-tuning doesn't match the tool's expectations. The same applies in reverse: Claude in a GPT-optimized tool won't leverage Claude's strengths. This is analogous to the Browser Wars: each vendor optimizes for their own rendering engine, and cross-browser compatibility is always an approximation. Open-source tools (Crush, OpenCode) can approximate but never perfectly replicate proprietary harnesses.
+**RATIONALE:**
+1. GPT Codex models were fine-tuned specifically for the Codex harness (`apply_patch` diff format, `rg` not grep, `AGENTS.md` not CLAUDE.md, specific tool calling conventions) — using GPT in a Claude-designed tool produces suboptimal results because fine-tuning doesn't match expectations. [explicit]
+2. The same applies in reverse: Claude in a GPT-optimized tool won't leverage Claude's strengths — each vendor optimizes for their own harness, and cross-tool compatibility is always an approximation. [explicit]
+3. Open-source tools (Crush, OpenCode) can approximate but never perfectly replicate proprietary harnesses, similar to how cross-browser compatibility never fully matches native rendering. [derived]
 **COUNTER-INDICATION:** For simple tasks (formatting, basic code generation, Q&A), the harness mismatch is negligible. The effect is most pronounced on complex agentic tasks requiring multi-step tool use, file editing, and iterative debugging. Also, some open-source models (Qwen, DeepSeek) don't have a dedicated harness, so any general tool works equally.
 
 ## OPERATIONAL CONSTRAINTS

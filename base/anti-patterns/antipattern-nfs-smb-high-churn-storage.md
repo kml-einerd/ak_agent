@@ -26,5 +26,18 @@ Use a block-level protocol instead of a file-level protocol for high-churn workl
 
 **NOT TO CONFUSE WITH:** NFS performance tuning (e.g., increasing `rsize`/`wsize`, using `async` mount). Tuning can reduce overhead but cannot eliminate the fundamental per-file RPC cost. The anti-pattern is the architectural choice, not the specific mount options.
 
+## OPERATIONAL CONSTRAINTS
+**FOR acceptable I/O performance on network storage TO SUCCEED:**
+
+NEVER:
+- Point Docker data directories, database WAL files, or build caches at NFS/SMB mounts [explicit — ROOT CAUSE: "every metadata operation is a separate RPC call over the network"]
+- Assume fast network speed (10Gbps) compensates for per-file RPC latency [explicit — ROOT CAUSE: "Even at 10Gbps, 106ms average RPC latency"]
+
+ALWAYS:
+- Use block-level protocols (iSCSI, EBS) for high-churn workloads requiring frequent metadata operations [explicit — CORRECTION]
+- Reserve NFS/SMB exclusively for human-scale access patterns (media files, document shares) [explicit — CORRECTION: "one file is opened at a time"]
+
+GATE: High-churn workload storage is mounted via block protocol (iSCSI, EBS), not NFS/SMB. If false, migrate to block storage before deploying.
+
 ## SOURCE
 https://akitaonrails.com/2025/04/24/acessando-seu-nas-usando-iscsi-em-vez-de-smb/

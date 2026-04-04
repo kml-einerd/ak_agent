@@ -21,7 +21,8 @@
 ---
 
 ## DONE WHEN
-The prompt contains: (1) specific error description, (2) error messages/logs, (3) reproduction steps, and (4) change history. The LLM receives enough information to diagnose without guessing.
+- The prompt contains all four elements: specific error description, exact error messages/logs, reproduction steps, and change history since last working state
+- The LLM receives enough information to diagnose without guessing (verified by checking that the LLM's first response addresses the root cause rather than asking for more context)
 
 ## SOURCE
 https://akitaonrails.com/2026/02/01/vibe-code-fiz-um-editor-de-markdown-do-zero-com-claude-code-frankmd-parte-2/

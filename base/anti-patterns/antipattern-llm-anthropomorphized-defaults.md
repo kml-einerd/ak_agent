@@ -28,5 +28,18 @@ For API usage, place an equivalent directive at the top of the system prompt bef
 
 **NOT TO CONFUSE WITH:** Legitimate use of a conversational tone in user-facing products where a human-friendly style is a product requirement (e.g., a customer service chatbot). The anti-pattern applies specifically when working in technical or engineering contexts where precision and brevity are the primary requirements, and the persona overhead is pure waste.
 
+## OPERATIONAL CONSTRAINTS
+**FOR efficient LLM interaction in technical contexts TO SUCCEED:**
+
+NEVER:
+- Accept the default personality layer in technical/engineering LLM sessions [explicit — CORRECTION: "Disable the personality layer explicitly"]
+- Interpret LLM affirmations ("Great question!") or emotional responses as evidence of understanding [explicit — ROOT CAUSE: "pre-recorded behavioral patterns reinforced during training"]
+
+ALWAYS:
+- Configure a direct, minimal persona via system prompt or provider customization before starting work [explicit — CORRECTION]
+- Verify effectiveness by checking that responses contain no unsolicited affirmations or emotional content [explicit — CORRECTION: "Confirm effectiveness"]
+
+GATE: System prompt or provider customization includes a directive for direct, non-verbose responses. If false, configure persona before proceeding.
+
 ## SOURCE
 https://akitaonrails.com/2025/04/28/destruindo-a-personalidade-do-chatgpt-4o/

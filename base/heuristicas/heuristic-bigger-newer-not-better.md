@@ -3,7 +3,10 @@
 **DOMAIN:** ai-workflow
 **RULE:** Never assume a bigger or newer LLM model will outperform a smaller or older one for your specific task — always validate with benchmarks against your actual use case before switching.
 **APPLIES WHEN:** Choosing between model sizes (7B vs 32B), model generations (qwen2.5 vs qwen3), or model families for a production pipeline that will process large volumes.
-**RATIONALE:** Akita's benchmarks showed: qwen2.5vl:32B gave +0.06 series accuracy (1 additional correct answer out of 16) but was 29x slower than qwen2.5vl:7B. For 500K files, that turns a 6-hour job into a week-long job. The newer qwen3-vl:8B was actually worse — type accuracy of 0.55 vs 0.89 for the older model, with a 95% confidence interval that didn't even overlap. The newer model also had a regression in JSON output robustness (frequently truncated or malformed). Model quality is task-dependent and prompt-dependent — the only reliable signal is measurement on your specific workload.
+**RATIONALE:**
+1. Bigger models may offer negligible gains at massive cost: qwen2.5vl:32B gave +0.06 series accuracy (1 additional correct answer out of 16) but was 29x slower than qwen2.5vl:7B — for 500K files, a 6-hour job becomes a week-long job. [explicit]
+2. Newer models can actually regress: qwen3-vl:8B had type accuracy of 0.55 vs 0.89 for the older model (95% confidence intervals non-overlapping), plus a regression in JSON output robustness (frequently truncated or malformed). [explicit]
+3. Model quality is task-dependent and prompt-dependent — the only reliable signal is measurement on your specific workload, not marketing claims or general benchmarks. [derived]
 **COUNTER-INDICATION:** When marginal quality improvement is critical and latency/cost is irrelevant (e.g., medical diagnosis, legal document analysis), the bigger model may be justified despite the slowdown. Also, for general-purpose chat where no ground truth exists, bigger models are usually better at instruction following.
 
 ## OPERATIONAL CONSTRAINTS

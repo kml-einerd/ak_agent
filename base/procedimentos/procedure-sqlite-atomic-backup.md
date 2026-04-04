@@ -19,7 +19,9 @@
 ---
 
 ## DONE WHEN
-A valid, standalone .sqlite3 backup file exists at the destination path. The file can be opened and queried independently. The application was never interrupted during the process.
+- A valid .sqlite3 backup file exists at the destination path (verified by `sqlite3 backup.sqlite3 "PRAGMA integrity_check;"` returning "ok")
+- The backup file can be opened and queried independently as a standalone database
+- The application was never interrupted during the backup process (verified by checking application logs for zero downtime)
 
 **WARNING:** NEVER back up an active SQLite database by raw-copying the .sqlite3 file (cp, tar, rsync). If a write is in progress during the copy, the backup will be a half-written, corrupted file. Always use VACUUM INTO or the `.backup` command.
 

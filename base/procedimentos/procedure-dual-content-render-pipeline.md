@@ -25,7 +25,9 @@
 ---
 
 ## DONE WHEN
-Same Markdown file produces correct output on both web and email. Adding a new shortcode requires adding one web template AND one email-safe mapping. Neither pipeline affects the other.
+- Same Markdown file produces correct output on both web and email (verified by rendering a test article through both pipelines)
+- Adding a new shortcode requires adding one web template AND one email-safe mapping (no other files need changes)
+- Email output passes WCAG contrast and renders correctly in Gmail, Outlook, and Apple Mail (verified via email testing tool)
 
 ## SOURCE
 https://akitaonrails.com/2026/02/19/frontend-sem-framework-bastidores-do-the-m-akita-chronicles/

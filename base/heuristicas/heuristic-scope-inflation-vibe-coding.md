@@ -3,7 +3,10 @@
 **DOMAIN:** ai-workflow
 **RULE:** Monitor project scope actively during vibe coding sessions. The ease of adding features via LLM makes scope creep invisible until the project is 3-5x larger than originally planned.
 **APPLIES WHEN:** During any AI-assisted project where features are being added incrementally, especially when the developer is in a flow state and the LLM is delivering features quickly.
-**RATIONALE:** In traditional coding, scope creep is self-limiting because each new feature costs visible effort and time. In LLM-assisted coding, features arrive so quickly (minutes instead of hours) that the developer doesn't feel the cost of each addition. Akita's FrankMD started as a "Notepad Web" for simple notes and ended as a full-featured Markdown editor with S3 integration, i18n, syntax highlighting, Docker deployment, and 33,000 lines of code. The original estimate was "1 day" — it took 3 days of extreme focus. Every time estimate in vibe coding is underestimated because scope inflates invisibly.
+**RATIONALE:**
+1. In traditional coding, scope creep is self-limiting because each new feature costs visible effort and time — in LLM-assisted coding, features arrive so quickly (minutes instead of hours) that the developer doesn't feel the cost of each addition. [explicit]
+2. Akita's FrankMD started as a "Notepad Web" for simple notes and ended as a full-featured Markdown editor with S3 integration, i18n, syntax highlighting, Docker deployment, and 33,000 lines of code — the original "1 day" estimate took 3 days of extreme focus. [explicit]
+3. Every time estimate in vibe coding is underestimated because scope inflates invisibly — the ease of adding features removes the natural friction that limits scope in traditional development. [derived]
 **COUNTER-INDICATION:** Projects with a fixed, well-defined specification (e.g., implementing an existing API spec or replicating a known product). Scope inflation is primarily a risk in exploratory/personal projects where "just one more feature" has no external check.
 
 ## OPERATIONAL CONSTRAINTS

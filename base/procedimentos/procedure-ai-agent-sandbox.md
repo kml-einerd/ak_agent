@@ -22,7 +22,10 @@
 ---
 
 ## DONE WHEN
-AI agent runs inside the sandbox and can: (a) read and write project files, (b) run build tools and tests, (c) access the web for documentation, but CANNOT: (d) read files outside the project and allowed dotdirs, (e) write to any system directory, (f) access sensitive credentials or browser profiles.
+- AI agent runs inside the sandbox and can read/write project files, run build tools and tests, and access the web for documentation
+- Agent CANNOT read files outside the project and allowed dotdirs (`ls ~/.gnupg` from inside sandbox returns empty or error)
+- Agent CANNOT write to any system directory (`touch /usr/test` fails with permission denied)
+- Agent CANNOT access sensitive credentials or browser profiles (`ls ~/.config/BraveSoftware` returns empty or error)
 
 ## SOURCE
 https://akitaonrails.com/2026/01/10/ai-agents-garantindo-a-protecao-do-seu-sistema/

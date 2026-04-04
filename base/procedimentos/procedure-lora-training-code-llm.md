@@ -23,7 +23,9 @@
 ---
 
 ## DONE WHEN
-The LoRA-augmented model responds correctly to questions about the new knowledge (e.g., "which version of Zig do you know?" → "0.14.0") AND the knowledge is embedded in the model weights (no context injection needed per session). Note: aligned responses confirm training worked but do not guarantee code correctness — verify with actual compilation/test runs.
+- The LoRA-augmented model responds correctly to factual questions about the new knowledge (e.g., "which version of Zig do you know?" returns "0.14.0")
+- Knowledge is embedded in model weights — no context injection needed per session (verified by querying through a fresh API session with no system prompt mentioning the new knowledge)
+- Note: aligned responses confirm training worked but do not guarantee code correctness — verify with actual compilation/test runs
 
 ## EXTENSION: H100 VRAM Constraints and Chat-Token Format
 [extended from: https://akitaonrails.com/2025/05/03/ultimo-tentativa-de-treinar-uma-llm-com-lora-tiro-de-canhao-mas-errando-a-mosca/]
