@@ -1,0 +1,6 @@
+.superpowers/
+.claude/worktrees/
+.wrangler/
+screenshot-*.jpg
+screenshot-*.png
+docs/superpowers/specs/
