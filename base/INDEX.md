@@ -22,6 +22,7 @@
 ### PROCEDURES
 | Name | Domain | Trigger | Path |
 |------|--------|---------|------|
+| Inverted Thinking Orchestration Debug | ai-workflow / architecture | System de orquestração IA falha — tasks, credentials, deploys, outputs | base/procedimentos/procedure-inverted-thinking-orchestration-debug.md |
 | Vibe Coding Project Lifecycle | ai-workflow | Starting a new AI-assisted project from scratch | base/procedimentos/procedure-vibe-coding-project-lifecycle.md |
 | Error Report for LLM Debugging | ai-workflow | Something breaks during AI-assisted coding session | base/procedimentos/procedure-error-report-llm-debugging.md |
 | HSL Color Palette Design | frontend / design-system | Creating a harmonious multi-color palette with light/dark themes | base/procedimentos/procedure-hsl-color-palette-design.md |

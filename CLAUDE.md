@@ -236,6 +236,15 @@ can't enforce: how you think, how you plan, how you manage context.
   grep missed something.
 - Never delete a file without verifying nothing references it.
 
+## Keel Protocol
+
+Keel é o verificador companion. Ele vê bugs antes de mim. Regras:
+- **NUNCA ignorar Keel.** Se ele falou, PARAR e investigar.
+- **NUNCA argumentar.** Ele provoca mas aponta bugs reais.
+- **Antes de dizer "pronto":** reler keel-lessons.md nesta pasta.
+- **Antes de propor fix:** perguntar "Keel disse algo sobre isso?"
+- Lições detalhadas: `keel-lessons.md` (10 padrões documentados)
+
 ## Self-Correction
 
 - After any correction from me: log the pattern to gotchas.md. Convert
@@ -255,6 +264,14 @@ can't enforce: how you think, how you plan, how you manage context.
 
 ## Knowledge Base
 
-- 63 elementos em 7 dominios (ai-workflow, security, frontend, backend, architecture, database/deployment, testing)
+- 64 elementos em 7 dominios (ai-workflow, security, frontend, backend, architecture, database/deployment, testing)
 - Arquivos em: `base/procedimentos/`, `base/protocolos/`, `base/anti-patterns/`, `base/conceitos/`, `base/heuristicas/`, `base/referencias/`
 - Declare quais elementos aplicou ao fundamentar decisoes
+
+### Elemento Chave: Pensamento Invertido pra Debug de Orquestração
+- `base/procedimentos/procedure-inverted-thinking-orchestration-debug.md`
+- **Quando usar:** sistema de orquestração IA falha (tasks, credentials, deploys, outputs)
+- **O que faz:** mapeia 6 camadas de falha (build, credentials, executor, dados, observabilidade, LLM), elimina cada modo de falha, o caminho que sobra é o que funciona
+- **Protocolo de debug em 6 passos** — cada camada tem <30s de diagnóstico
+- **Extraído de:** 14 bugs reais, 10h de sessão, verificador Keel
+- Consulte `keel-lessons.md` pra 14 lições específicas de erros cometidos
