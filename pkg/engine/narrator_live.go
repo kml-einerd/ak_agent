@@ -23,20 +23,34 @@ type runState struct {
 	summary string
 }
 
+// NarratorOption configures the NarratorLive.
+type NarratorOption func(*NarratorLive)
+
+// WithNarratorMetrics wires a MetricsPipeline into the narrator.
+func WithNarratorMetrics(mp *MetricsPipeline) NarratorOption {
+	return func(n *NarratorLive) {
+		n.metrics = mp
+	}
+}
+
 // NarratorLive observes engine lifecycle events and detects anomalies.
 // Concurrent-safe via RWMutex. Runs a background goroutine for periodic checks.
 type NarratorLive struct {
-	mu   sync.RWMutex
-	runs map[string]*runState
-	done chan struct{}
-	wg   sync.WaitGroup
+	mu      sync.RWMutex
+	runs    map[string]*runState
+	metrics *MetricsPipeline
+	done    chan struct{}
+	wg      sync.WaitGroup
 }
 
 // NewNarratorLive creates a NarratorLive and starts its background goroutine.
-func NewNarratorLive() *NarratorLive {
+func NewNarratorLive(opts ...NarratorOption) *NarratorLive {
 	n := &NarratorLive{
 		runs: make(map[string]*runState),
 		done: make(chan struct{}),
+	}
+	for _, opt := range opts {
+		opt(n)
 	}
 	n.wg.Add(1)
 	go n.loop()
@@ -93,6 +107,13 @@ func (n *NarratorLive) OnTask(r TaskResult) {
 			Msg:    fmt.Sprintf("task %s stuck for %s", r.TaskID, r.Duration),
 		})
 	}
+
+	if n.metrics != nil {
+		labels := map[string]string{"run": r.RunID, "wave": r.WaveID, "task": r.TaskID, "status": r.Status}
+		n.metrics.Counter("task_completed", 1, labels)
+		n.metrics.Timer("task_duration", r.Duration, labels)
+		n.metrics.Counter("task_cost", r.Cost, labels)
+	}
 }
 
 // OnWave is called after all tasks in a wave complete. Detects 100% failure.
@@ -141,6 +162,11 @@ func (n *NarratorLive) OnRun(r RunResult) {
 
 	rs.summary = fmt.Sprintf("run %s: status=%s cost=$%.2f budget=$%.2f waves=%d",
 		r.RunID, r.Status, r.TotalCost, r.BudgetLimit, len(r.Waves))
+
+	if n.metrics != nil {
+		labels := map[string]string{"run": r.RunID, "status": r.Status}
+		n.metrics.Gauge("run_total_cost", r.TotalCost, labels)
+	}
 }
 
 // Alerts returns all alerts for a run.
