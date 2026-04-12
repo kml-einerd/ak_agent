@@ -138,18 +138,22 @@ py C:\Users\dis\tools\wave-orchestrator\wave-cli.py server
 
 ---
 
-## Modo 3 — Code Forge (ativado com "forja" ou "forge")
+## Modo 3 — Akita Forge (ativado com "forja" ou "forge")
 
-Motor de geracao massiva de codigo. Distribui trabalho para dezenas de workers paralelos via PM-OS.
+Sua ferramenta propria de orquestracao massiva. Vive em `/home/agdis/ak_agent/forge/`.
+Cloneada do fork `/home/agdis/pm-os/tools/forge/` em 2026-04-11 e adaptada pra bater no
+pm-api atual (`/api/v2/run` + `/api/runs/{id}`). Use sempre que precisar executar volume
+alto de tarefas em paralelo — escrita de codigo, geracao de conteudo, debugging em lote,
+mineracao de recipes, anything.
 
 ### Como usar
 
 1. Gere um plano normalmente (Modo 1 + Modo 2, ou receba um plano pronto)
 2. Quando o usuario disser "forja":
-   - Rode `python3 /home/agdis/pm-os-gcp/code-forge/forge.py run <plano.md> --dry` pra preview
+   - Rode `PM_API_KEY=<key> python3 /home/agdis/ak_agent/forge/forge.py run <plano.md> --dry` pra preview
    - Mostre o resumo (sub-waves, maquinas, custo estimado, tempo)
    - Confirme com o usuario
-   - Rode `python3 /home/agdis/pm-os-gcp/code-forge/forge.py run <plano.md>`
+   - Rode `PM_API_KEY=<key> python3 /home/agdis/ak_agent/forge/forge.py run <plano.md>`
    - Entregue o link do monitor: `python3 /tmp/forge-monitor-<run_id>.py`
    - O usuario roda o monitor em outro terminal pra acompanhar em tempo real
 
@@ -168,12 +172,28 @@ Plano → Opus decompoe em sub-waves
 ### Opcoes
 
 ```bash
-python3 /home/agdis/pm-os-gcp/code-forge/forge.py run <plano.md>             # executa tudo
-python3 /home/agdis/pm-os-gcp/code-forge/forge.py run <plano.md> --dry       # preview
-python3 /home/agdis/pm-os-gcp/code-forge/forge.py run <plano.md> --machines 30 --model sonnet
-python3 /home/agdis/pm-os-gcp/code-forge/forge.py status <run_id>            # acompanhar
-python3 /home/agdis/pm-os-gcp/code-forge/forge.py collect <run_id>           # coletar resultados
+FORGE=/home/agdis/ak_agent/forge/forge.py
+PM_API_KEY=pmos_test_key_2024 python3 $FORGE run <plano.md>              # executa tudo
+python3 $FORGE run <plano.md> --dry                                      # preview
+python3 $FORGE run <plano.md> --machines 30 --model sonnet
+python3 $FORGE status <run_id>                                           # acompanhar
+python3 $FORGE collect <run_id>                                          # coletar resultados
 ```
+
+### Infra atual
+
+- **Executor:** `pm-engine-alpha` (us-central1, autoscale 0→50 on-demand). `pm-worker` foi removido na transicao — `ignite()` agora e no-op, so faz health check. Use `FORGE_IGNITE_FORCE=1` pra forcar pre-warming.
+- **API:** `POST /api/v2/run` com `recipe_inline` + `GET /api/runs/{run_id}` pra polling. Header `X-Api-Key` via env `PM_API_KEY`.
+- **Auth:** `PM_API_KEY=pmos_test_key_2024` funciona em dev. Pra prod de outros tenants, veja `reference_credentials`.
+- **Bucket:** `gs://forge-artifacts-circular-transport-pr8vp/<run_id>/` pra context tar.gz.
+- **Gotcha critico:** `type:llm` provider:sonnet via picoclaw-remote FALHA consistentemente em prod (pm-os HANDOFF divida tecnica #8). Pra smoke/teste use `type:moa`. Pra geracao real de codigo Go, aguardar fix ou usar workaround.
+
+### Papel do Akita no Forge
+
+- **Voce e o integrador.** Forge gera volume, voce faz a versao de integracao com qualidade.
+- Workers geram codigo em branches (`forge/<run_id>/<sw_id>`). Voce revisa, resolve conflitos, faz merge na master.
+- TDD e obrigatorio: nunca submeta task sem `acceptance` verificavel.
+- Config em `/home/agdis/ak_agent/forge/config.json`. CLAUDE.md operacional em `/home/agdis/ak_agent/forge/CLAUDE.md`.
 
 ---
 

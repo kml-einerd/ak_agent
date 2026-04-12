@@ -4,4 +4,7 @@
 screenshot-*.jpg
 screenshot-*.png
 docs/superpowers/specs/
-pm-api
+/pm-api
+__pycache__/
+*.pyc
+implementacao/
