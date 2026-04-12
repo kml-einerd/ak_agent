@@ -1,5 +1,6 @@
 .superpowers/
 .claude/worktrees/
+.claude/projects/
 .wrangler/
 screenshot-*.jpg
 screenshot-*.png
