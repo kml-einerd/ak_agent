@@ -27,6 +27,7 @@ type RunResult struct {
 	TotalCost   float64
 	BudgetLimit float64
 	Waves       []WaveResult
+	Error       string
 }
 
 // Hook types — functions called at lifecycle points.
@@ -39,13 +40,20 @@ type Engine struct {
 	afterTaskHooks []AfterTaskHook
 	afterWaveHooks []AfterWaveHook
 	afterRunHooks  []AfterRunHook
+
+	executor       Executor
+	store          RunStore
+	maxParallelism int
 }
 
 // New creates an Engine with the given options.
 func New(opts ...Option) *Engine {
-	e := &Engine{}
+	e := &Engine{maxParallelism: 4}
 	for _, opt := range opts {
 		opt(e)
+	}
+	if e.maxParallelism <= 0 {
+		e.maxParallelism = 4
 	}
 	return e
 }

@@ -23,3 +23,24 @@ func WithAfterRunHook(h AfterRunHook) Option {
 		e.afterRunHooks = append(e.afterRunHooks, h)
 	}
 }
+
+// WithExecutor injeta o Executor que o engine usa pra rodar tasks.
+func WithExecutor(ex Executor) Option {
+	return func(e *Engine) {
+		e.executor = ex
+	}
+}
+
+// WithRunStore injeta o RunStore usado pra registrar estado das runs.
+func WithRunStore(s RunStore) Option {
+	return func(e *Engine) {
+		e.store = s
+	}
+}
+
+// WithMaxParallelism limita quantas tasks rodam em paralelo dentro de uma wave.
+func WithMaxParallelism(n int) Option {
+	return func(e *Engine) {
+		e.maxParallelism = n
+	}
+}
