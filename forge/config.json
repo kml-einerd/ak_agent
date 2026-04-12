@@ -1,0 +1,36 @@
+{
+  "pm_api_url": "https://pm-api-852176378633.us-central1.run.app",
+  "pm_engine_url": "https://pm-engine-alpha-852176378633.us-central1.run.app",
+  "gcp_project": "circular-transport-pr8vp",
+  "region": "us-central1",
+  "forge_bucket": "forge-artifacts-circular-transport-pr8vp",
+  "cloud_run_worker_service": "pm-engine-alpha",
+  "api": {
+    "run_endpoint": "/api/v2/run",
+    "get_run_endpoint": "/api/runs/{id}",
+    "api_key_env": "PM_API_KEY",
+    "api_key_header": "X-Api-Key"
+  },
+  "defaults": {
+    "model_generation": "haiku",
+    "model_complex": "sonnet",
+    "model_review": "opus",
+    "model_planning": "opus",
+    "max_machines": 20,
+    "max_retries": 3,
+    "escalation": {
+      "haiku_fails": "sonnet",
+      "sonnet_fails": "opus"
+    }
+  },
+  "tdd": {
+    "enabled": true,
+    "macro_tests_model": "opus",
+    "unit_tests_model": "sonnet"
+  },
+  "artifacts": {
+    "retention_hours": 24,
+    "max_context_size_mb": 5,
+    "max_result_size_mb": 10
+  }
+}
