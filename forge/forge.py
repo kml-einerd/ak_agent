@@ -196,6 +196,46 @@ _STEP_TYPE_MAP = {
     "moa": "moa",
 }
 
+# ---------------------------------------------------------------------------
+# Output Guard — detect junk outputs from LLM tool invocation
+# ---------------------------------------------------------------------------
+
+_TOOL_INVOCATION_PATTERNS = [
+    "awaiting permission",
+    "please approve",
+    "please allow me to write",
+    "let me write the file",
+    "i'll use the write_file",
+    "ready to create the",
+    "i need to approve the tool",
+    "approve the tool use",
+]
+
+_CODE_INDICATORS = [
+    "func ", "package ", "def ", "class ", "import ", "from ",
+    "const ", "type ", "struct ", "interface ", "export ",
+]
+
+# Anti-write_file instruction appended to every worker task
+OUTPUT_FORMAT_RULE = (
+    "REGRA DE OUTPUT: Retorne APENAS o codigo/texto como resposta. "
+    "NAO use write_file. NAO use ferramentas de escrita de arquivo. "
+    "NAO peca permissao. Retorne o conteudo puro como texto."
+)
+
+
+def detect_tool_invocation(output: str) -> bool:
+    """Return True if output looks like LLM tried to invoke write_file instead
+    of returning code as text. Mirrors Go-side output_guard.go."""
+    if len(output) < 10:
+        return False
+    # If output contains real code, it's usable
+    for ind in _CODE_INDICATORS:
+        if ind in output:
+            return False
+    lower = output.lower()
+    return any(p in lower for p in _TOOL_INVOCATION_PATTERNS)
+
 
 def _wrap_task_as_recipe_inline(task_data):
     """Wrap legacy task_data dict as a recipe_inline for /api/v2/run.
@@ -659,6 +699,7 @@ def dispatch_subwave(run_id, sw, context_gcs_path, task_notes=None, repo_url=Non
         f"## CLAUDE.md\n\n{claude_md}",
         f"## Tarefa\n\n{sw.get('task_description', '')}",
         f"## Critério de aceitação\n\n{sw.get('acceptance', 'Testes devem passar')}",
+        f"## Regra de output\n\n{OUTPUT_FORMAT_RULE}",
     ]
 
     # Git workflow instructions for the worker
@@ -847,6 +888,23 @@ def relay_monitor(run_id, subwaves, dispatched_tasks, repo_dir=None, repo_url=No
                 has_completion_signal = True
 
             if task_status in ("done", "passed") or has_completion_signal:
+                # Guard: detect LLM tool invocation in output (junk output)
+                if detect_tool_invocation(output):
+                    print(f"  ⚠️  {sw_id} — tool invocation detected in output, treating as failure")
+                    completed[sw_id] = status
+                    results[sw_id] = {
+                        "status": "red",
+                        "task_id": task_id,
+                        "error": "LLM invoked write_file instead of returning code as text",
+                        "branch_pushed": sw_id in pushed_sws,
+                    }
+                    _print_sw_fail(sw_id, results[sw_id], len(completed), len(subwaves))
+                    supabase_log_event(run_id, sw_id, "failed", {
+                        "output": output[:500],
+                    })
+                    _dispatch_unblocked(run_id, pending, completed, results, in_flight, repo_url=repo_url)
+                    continue
+
                 completed[sw_id] = status
 
                 # Extract TASK_NOTES from output for relay to dependents
