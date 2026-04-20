@@ -182,11 +182,11 @@ python3 $FORGE collect <run_id>                                          # colet
 
 ### Infra atual
 
-- **Executor:** `pm-engine-alpha` (us-central1, autoscale 0→50 on-demand). `pm-worker` foi removido na transicao — `ignite()` agora e no-op, so faz health check. Use `FORGE_IGNITE_FORCE=1` pra forcar pre-warming.
-- **API:** `POST /api/v2/run` com `recipe_inline` + `GET /api/runs/{run_id}` pra polling. Header `X-Api-Key` via env `PM_API_KEY`.
-- **Auth:** `PM_API_KEY=pmos_test_key_2024` funciona em dev. Pra prod de outros tenants, veja `reference_credentials`.
-- **Bucket:** `gs://forge-artifacts-circular-transport-pr8vp/<run_id>/` pra context tar.gz.
-- **Gotcha critico:** `type:llm` provider:sonnet via picoclaw-remote FALHA consistentemente em prod (pm-os HANDOFF divida tecnica #8). Pra smoke/teste use `type:moa`. Pra geracao real de codigo Go, aguardar fix ou usar workaround.
+- **Runtime:** pm-api + pm-engine rodam local via systemd no mesmo host do Akita (`pmos-api.service` :8080, `pmos-engine.service` :8081). Caddy proxy TLS. Cloud Run é legacy — artefatos em `archive/deploy-cloudrun/`.
+- **Executor LLM:** `adapters.AnthropicDirectExecutor` in-process (HTTP, OAuth Max). PicoClaw subprocess foi desligado 2026-04-20 — binário segue em `tools/picoclaw/` mas engine não dispara mais por ele.
+- **API:** `POST /api/v2/run` com `recipe_inline` + `GET /api/runs/{run_id}` pra polling. Header `X-Api-Key` via env `PM_API_KEY`. Pra RaaS: `POST /api/v2/bundles/{slug}/invoke` + `GET /api/v2/jobs/{id}`.
+- **Auth:** `PM_API_KEY=pmos_test_key_2024` funciona local/dev. Outros tenants ver `reference_credentials`.
+- **Bucket:** `gs://forge-artifacts-circular-transport-pr8vp/<run_id>/` pra context tar.gz (usado pelo Forge).
 
 ### Papel do Akita no Forge
 
