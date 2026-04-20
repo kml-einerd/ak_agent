@@ -64,10 +64,12 @@ code-forge/
 
 ## PM-OS API
 
-- Submit task: `POST /api/tasks/submit`
-- Get task: `GET /api/tasks/{id}`
-- URL: configurada em config.json e env PM_API_URL
-- Credenciais: env PM_API_KEY
+- Submit run: `POST /api/v2/run` (body: `{recipe_inline, params}`)
+- Get run: `GET /api/runs/{id}`
+- List runs: `GET /api/runs?limit=N`
+- Bundles (RaaS): `GET /api/v2/bundles`, `POST /api/v2/bundles/{slug}/invoke`
+- URL: `config.json` → `pm_api_url` (default `http://localhost:8080`). Override com env `PM_API_URL` pra apontar em Cloud Run.
+- Auth: header `X-Api-Key` lido de `PM_API_KEY` (dev: `pmos_test_key_2024`).
 
 ## Princípios
 
