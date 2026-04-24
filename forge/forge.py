@@ -42,6 +42,12 @@ FORGE_BUCKET = os.environ.get("FORGE_BUCKET", f"forge-artifacts-{GCP_PROJECT}")
 FORGE_DIR = Path(__file__).parent
 PROMPTS_DIR = FORGE_DIR / "prompts"
 
+# Trunk / default branch name for the target repo. Defaults to "main" for
+# historical compat; override to "master", "trunk", or a feature branch
+# when forging against a repo that uses a different convention.
+#   FORGE_BASE_BRANCH=master  python3 forge.py run plan.md
+BASE_BRANCH = os.environ.get("FORGE_BASE_BRANCH", "main")
+
 MODELS = {
     "haiku": "haiku",
     "sonnet": "sonnet",
@@ -1058,8 +1064,8 @@ def collect_results(run_id, results, project_dir):
 
     # 2) Create integration branch from main
     integration_branch = f"forge/{run_id}/integration"
-    print(f"  Creating branch {integration_branch} from main...")
-    _git(["checkout", "-B", integration_branch, "main"])
+    print(f"  Creating branch {integration_branch} from {BASE_BRANCH}...")
+    _git(["checkout", "-B", integration_branch, BASE_BRANCH])
 
     # 3) Merge each green branch (sorted for determinism)
     green = sorted(
@@ -1178,7 +1184,7 @@ def _create_forge_pr(run_id, branch, results, green, needs_manual, test_run, pro
     if gh_check.returncode != 0:
         print(f"\n  ⚠️  gh CLI not found. Create PR manually:")
         print(f"     git push origin {branch}")
-        print(f"     gh pr create --base main --head {branch}")
+        print(f"     gh pr create --base {BASE_BRANCH} --head {branch}")
         return None
 
     # Build PR body
@@ -1235,7 +1241,7 @@ def _create_forge_pr(run_id, branch, results, green, needs_manual, test_run, pro
 
     pr = subprocess.run(
         ["gh", "pr", "create",
-         "--base", "main", "--head", branch,
+         "--base", BASE_BRANCH, "--head", branch,
          "--title", title, "--body", body],
         cwd=project_dir, capture_output=True, text=True,
     )
@@ -1246,7 +1252,7 @@ def _create_forge_pr(run_id, branch, results, green, needs_manual, test_run, pro
         return url
     else:
         print(f"  ❌ gh pr create failed:\n{pr.stderr[:300]}")
-        print(f"  Create manually: gh pr create --base main --head {branch}")
+        print(f"  Create manually: gh pr create --base {BASE_BRANCH} --head {branch}")
         return None
 
 
@@ -1426,13 +1432,13 @@ def create_forge_branch(run_id, sw_id, repo_dir=None):
     branch = f"forge/{run_id}/{sw_id}"
     cwd = repo_dir or os.getcwd()
 
-    # Fetch latest main
-    subprocess.run(["git", "fetch", "origin", "main"],
+    # Fetch latest trunk
+    subprocess.run(["git", "fetch", "origin", BASE_BRANCH],
                    capture_output=True, text=True, cwd=cwd)
 
-    # Create branch from origin/main
+    # Create branch from origin/<BASE_BRANCH>
     result = subprocess.run(
-        ["git", "checkout", "-b", branch, "origin/main"],
+        ["git", "checkout", "-b", branch, f"origin/{BASE_BRANCH}"],
         capture_output=True, text=True, cwd=cwd,
     )
     if result.returncode != 0:
@@ -1492,9 +1498,9 @@ def merge_forge_branches(run_id, repo_dir=None):
     if not sw_branches:
         return {"branch": integration, "ok": False, "error": "no branches to merge", "merged": []}
 
-    # Create integration branch from origin/main
+    # Create integration branch from origin/<BASE_BRANCH>
     result = subprocess.run(
-        ["git", "checkout", "-b", integration, "origin/main"],
+        ["git", "checkout", "-b", integration, f"origin/{BASE_BRANCH}"],
         capture_output=True, text=True, cwd=cwd,
     )
     if result.returncode != 0:
@@ -1721,8 +1727,8 @@ def cmd_run(input_path, dry_run=False, machines=20, model="haiku", auto_confirm=
                 print(f"  🌿 {br['branch']}")
             else:
                 print(f"  ⚠️  {sw['id']} — branch fail: {br.get('error', '')[:80]}")
-            # Go back to main for next branch creation
-            subprocess.run(["git", "checkout", "main"],
+            # Go back to trunk for next branch creation
+            subprocess.run(["git", "checkout", BASE_BRANCH],
                            capture_output=True, text=True, cwd=project_dir)
 
     # Phase 2: Dispatch independent sub-waves
