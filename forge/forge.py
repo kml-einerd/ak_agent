@@ -1207,7 +1207,7 @@ def _create_forge_pr(run_id, branch, results, green, needs_manual, test_run, pro
     sw_section = "\n".join(sw_lines)
 
     diff_stat = subprocess.run(
-        ["git", "diff", "--stat", "main...HEAD"], cwd=project_dir,
+        ["git", "diff", "--stat", f"{BASE_BRANCH}...HEAD"], cwd=project_dir,
         capture_output=True, text=True,
     )
     files_section = diff_stat.stdout.strip() if diff_stat.returncode == 0 else "(could not diff)"
