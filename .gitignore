@@ -9,3 +9,9 @@ docs/superpowers/specs/
 __pycache__/
 *.pyc
 implementacao/
+
+# Runtime lock files
+.claude/scheduled_tasks.lock
+
+# Sub-repo (kml-einerd/openclaw-port — clonado separado)
+openclaw-port/
