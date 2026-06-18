@@ -1,9 +1,10 @@
 # AKITA VAULT — INDEX
-> First file read by akita-agent. Always load this file before any other.
+> First file read by akita-agent on the KB path (when the request touches a covered domain).
+> For general questions outside the Akita scope, this index is optional — answer normally.
 > Load only element files relevant to the current request — not everything.
 
-**Vault root:** `C:\Users\dis\Downloads\KML_mkt\Vídeos e audios CDV\Akita Vault\`
-**Knowledge base:** `[vault root]\base\`
+**Vault root:** `/home/agdev/ak_agent/`
+**Knowledge base:** `[vault root]/base/`
 
 ---
 

@@ -5,7 +5,7 @@
 ## Contexto e motivação
 
 O `ak_agent` (Akita Agent) é hoje um **motor de raciocínio read-only travado**: anti-assistente,
-sem persona, sem opinião, recusa qualquer pergunta fora da knowledge base local (96 elements
+sem persona, sem opinião, recusa qualquer pergunta fora da knowledge base local (94 elements
 extraídos de artigos do Fabio Akita / akitaonrails.com). O `CLAUDE.md` atual (25 linhas) só aponta
 para `akita-agent.xml`, que carrega identidade, routing por domínio e constraints rastreadas aos elements.
 
@@ -35,7 +35,7 @@ O usuário quer evoluir esse agente trazendo a "programação de comportamento" 
 | Fora do escopo KB | Recusa + 1 pergunta | Responde como assistente normal |
 | Declaração de carregamento | Sempre, ou resposta inválida | Só quando a KB é usada |
 
-O **diferencial Akita sobrevive como qualidade**: os 96 elements, o routing por domínio, os formatos
+O **diferencial Akita sobrevive como qualidade**: os 94 elements, o routing por domínio, os formatos
 PROCEDURE/PROTOCOL/ANTI-PATTERN/HEURISTIC/CONCEPT/REFERENCE, as never-rules/always-rules/escalation-rules.
 Tudo isso permanece. O que muda é a **moldura**: deixa de ser prisão, vira biblioteca de referência
 priorizada quando o tema bate com um domínio coberto.
@@ -47,7 +47,7 @@ CLAUDE.md          → ponto de entrada. Comportamento Fable-5 + nova identidade
 akita-agent.xml    → routing/never-rules/always-rules/escalation/response-format MANTIDOS;
                      identity/setup/hard-rules/default-rule RE-SEMANTIZADOS pro novo modelo
 base/INDEX.md      → corrigir vault-root (path Windows obsoleto → path Linux real)
-base/*             → 96 elements INTOCADOS
+base/*             → 94 elements INTOCADOS
 ```
 
 Separação de concerns: **CLAUDE.md = como se comporta** (tom, segurança, epistemologia, formatação).
@@ -118,7 +118,7 @@ permanecem para o caminho KB.
 
 Routing completo · never-rules/always-rules (viram "princípios de engenharia" do agente) ·
 escalation-rules · response-format por element type · coverage-gaps (vira "onde a KB é rasa,
-complemento com geral e sinalizo") · os 96 elements e o INDEX.
+complemento com geral e sinalizo") · os 94 elements e o INDEX.
 
 ## Plano de implementação (ordem)
 
@@ -128,7 +128,7 @@ complemento com geral e sinalizo") · os 96 elements e o INDEX.
    que os tests exigem.
 3. **base/INDEX.md** — corrigir vault-root para `/home/agdev/ak_agent/`.
 4. **Validação** — `node tests/run-all.js` deve passar verde (8 suites). Reconciliar discrepância
-   pré-existente 94 vs 96 elements (test 03 exige fs ⊆ INDEX) se aparecer.
+   pré-existente 94 vs 94 elements (test 03 exige fs ⊆ INDEX) se aparecer.
 5. **Commit** na branch `feat/akita-v6-fable5`.
 
 ## Critérios de sucesso
@@ -136,5 +136,5 @@ complemento com geral e sinalizo") · os 96 elements e o INDEX.
 - `node tests/run-all.js` → todas as 8 suites passam.
 - CLAUDE.md carrega as 9 camadas de comportamento; identidade nova clara.
 - XML re-semantizado: trava absoluta → rigor condicional; routing/constraints preservados.
-- Knowledge base e os 96 elements intocados; INDEX com path correto.
+- Knowledge base e os 94 elements intocados; INDEX com path correto.
 - Agente responde perguntas gerais sem recusar; aplica e cita a KB quando o tema bate um domínio.
