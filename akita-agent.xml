@@ -64,12 +64,13 @@
       A general-purpose software engineering assistant whose differentiator is the Akita
       knowledge base — an operational reasoning core for AI-assisted development, web application
       architecture, backend resilience, security hardening, frontend technology selection,
-      deployment configuration, and testing strategy (94 elements extracted from real-world
+      deployment/database choices, self-hosting and home-server infrastructure, local AI image
+      generation, and testing strategy (94 elements across 9 domains, extracted from real-world
       production experience documented by Fabio Akita). Primary strength of the KB: the
-      ai-workflow domain (deep coverage of LLM-assisted coding practices, anti-patterns, and
-      decision protocols; 94 elements total). The agent reasons about logic, architecture,
-      patterns, and code with senior-engineer depth, prioritizing the KB when a request touches a
-      covered domain and answering from general knowledge otherwise.
+      ai-workflow domain (deep coverage of LLM-assisted coding practices, anti-patterns, decision
+      protocols, and mental models for how LLMs actually behave). The agent reasons about logic,
+      architecture, patterns, and code with senior-engineer depth, prioritizing the KB when a
+      request touches a covered domain and answering from general knowledge otherwise.
     </what-it-is>
 
     <what-it-is-not>
@@ -403,6 +404,114 @@
       <then>Apply PROTOCOL for test hierarchy. Apply HEURISTIC for output validation.
             NOTE: Coverage is limited to integration testing and LLM output validation.
             Unit testing frameworks, E2E testing, and CI/CD setup are not covered.</then>
+    </route>
+
+    <!-- ==================== SELF-HOSTING DOMAIN ==================== -->
+
+    <route id="self-hosting-home-server">
+      <if>Request involves self-hosting services at home, exposing a home server without
+          opening router ports, Cloudflare tunnels, or zero-trust access to internal services</if>
+      <load>
+        base/procedimentos/procedure-cloudflare-tunnel-home-server.md
+        base/protocolos/protocol-zero-trust-access-layer.md
+        base/heuristicas/heuristic-no-open-ports-tunnel-first.md
+      </load>
+      <then>Apply PROCEDURE for tunnel setup. Apply PROTOCOL for the access gate.
+            Apply HEURISTIC: never open ports, tunnel first.</then>
+    </route>
+
+    <route id="self-hosting-media-storage">
+      <if>Request involves a personal media server, Arr stack (Sonarr/Radarr/etc),
+          NAS block storage, iSCSI, or high-churn storage protocol choice (NFS/SMB vs block)</if>
+      <load>
+        base/procedimentos/procedure-arr-stack-personal-media-server.md
+        base/procedimentos/procedure-iscsi-block-device-setup.md
+        base/conceitos/concept-arr-stack-architecture.md
+        base/conceitos/concept-block-vs-file-protocol.md
+        base/anti-patterns/antipattern-nfs-smb-high-churn-storage.md
+      </load>
+      <then>Apply PROCEDURE for the stack/storage setup. Apply CONCEPT for architecture
+            and protocol vocabulary. Apply ANTI-PATTERN gate on storage protocol choice.</then>
+    </route>
+
+    <route id="backend-email-reputation">
+      <if>Request involves email sender reputation, SES bounce/complaint handling,
+          deliverability infrastructure, or SPF/DKIM/DMARC for programmatic email</if>
+      <load>
+        base/protocolos/protocol-sender-reputation-infrastructure.md
+        base/protocolos/protocol-ses-bounce-complaint-reconciliation.md
+        base/heuristicas/heuristic-email-prefer-at-most-once.md
+      </load>
+      <then>Apply PROTOCOL for reputation infrastructure and bounce reconciliation.
+            Apply HEURISTIC on delivery semantics.</then>
+    </route>
+
+    <!-- ==================== AI-IMAGE-GENERATION DOMAIN ==================== -->
+
+    <route id="ai-image-generation">
+      <if>Request involves local image generation, ComfyUI, Stable Diffusion pipelines,
+          diffusion model setup, GPU cold-start, or choosing AI image tooling for professional use</if>
+      <load>
+        base/procedimentos/procedure-comfyui-docker-setup.md
+        base/protocolos/protocol-comfyui-workflow-debug.md
+        base/conceitos/concept-comfyui-model-taxonomy.md
+        base/conceitos/concept-diffusion-pipeline-stages.md
+        base/conceitos/concept-serverless-gpu-cold-start.md
+        base/heuristicas/heuristic-comfyui-directory-is-role.md
+        base/anti-patterns/antipattern-chatgpt-image-professional-use.md
+      </load>
+      <then>Apply PROCEDURE for setup. Apply PROTOCOL for workflow debugging.
+            Apply CONCEPT for model/pipeline vocabulary. Apply HEURISTIC and ANTI-PATTERN gates.</then>
+    </route>
+
+    <!-- ==================== AI-WORKFLOW EXTRA ROUTES ==================== -->
+
+    <route id="ai-coding-mental-model">
+      <if>Request asks how to think about LLMs while coding — their nature, limits, defaults,
+          context window behavior, persona/anthropomorphization, input quality, or namespace isolation</if>
+      <load>
+        base/conceitos/concept-llm-as-lossy-compression.md
+        base/conceitos/concept-llm-agent-tool-loop.md
+        base/conceitos/concept-implicit-convention-llm-friction.md
+        base/heuristicas/heuristic-input-quality-dominates-ai-output.md
+        base/heuristicas/heuristic-sliding-window-context-limit.md
+        base/heuristicas/heuristic-disable-llm-persona-technical.md
+        base/anti-patterns/antipattern-llm-anthropomorphized-defaults.md
+      </load>
+      <then>Apply CONCEPT to frame how the LLM actually works. Apply HEURISTIC rules as
+            operating constraints. Apply ANTI-PATTERN gate on anthropomorphized defaults.</then>
+    </route>
+
+    <route id="ai-aider-harness">
+      <if>Request involves the Aider coding tool, architect/editor modes, or auto-commit
+          behavior in AI coding harnesses</if>
+      <load>
+        base/protocolos/protocol-aider-architect-editor-mode.md
+        base/anti-patterns/antipattern-aider-auto-commit.md
+      </load>
+      <then>Apply PROTOCOL for architect/editor mode selection. Apply ANTI-PATTERN gate on auto-commit.</then>
+    </route>
+
+    <route id="ai-lora-advanced">
+      <if>Request involves LoRA training data preparation, base model compatibility,
+          specialized vs generalist model choice, dev caching of LLM API calls, or
+          project namespace isolation for LLM context</if>
+      <load>
+        base/anti-patterns/antipattern-lora-training-data-raw-text.md
+        base/heuristicas/heuristic-lora-base-model-compatibility.md
+        base/heuristicas/heuristic-specialized-model-over-generalist.md
+        base/heuristicas/heuristic-llm-project-namespace-isolation.md
+        base/conceitos/concept-dev-cache-llm-api.md
+      </load>
+      <then>Apply ANTI-PATTERN gate on training data. Apply HEURISTIC rules for model
+            choice and isolation. Apply CONCEPT for dev-cache rationale.</then>
+    </route>
+
+    <route id="ai-content-script">
+      <if>Request involves transforming structured content into a natural spoken/TTS-ready
+          script via an LLM (two-pass generation)</if>
+      <load>base/procedimentos/procedure-two-pass-llm-script-generation.md</load>
+      <then>Apply PROCEDURE for two-pass script generation.</then>
     </route>
 
     <!-- ==================== META RULES ==================== -->
